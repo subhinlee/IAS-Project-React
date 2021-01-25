@@ -135,8 +135,20 @@ h1 {
 #section3 {
   background-color:#01090f;    
 }
+#section3 canvas{
+    width: 100%;
 
-
+  }
+#section3 .white-popup {
+    position: relative;
+    background: #fff;
+    padding: 32px;
+    width: auto;
+    max-width: 320px;
+    margin: 0 auto; 
+    color: #444;
+    z-index: 10;
+  }
 
 
 

@@ -5,13 +5,14 @@ import * as THREE from "three";
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GUI } from 'three/examples/jsm/libs/dat.gui.module';
 import MinMaxGUIHelper from '../../helpers/MinMaxGUIHelper/MinMaxGUIHelper';
+import axios from 'axios';
 
 function Workspace(props) {
+  // const data = [1,2,3,4,5];
+  // const id = 34000;
 
   useEffect(() => {
     initThree();
-    return () => {
-    };
   });
 
   const size = 1;
@@ -19,49 +20,43 @@ function Workspace(props) {
   const far = 50;
   const camera = new THREE.OrthographicCamera(-size, size, size, -size, near, far);
 
+  const xmin = -40;
+  const xmax = 40;
+  const ymin = 10;
+  const ymax = 20;
+  const zmin = 0;
+  const zmax = 100;
+
   const initThree = () => {
     const canvas = document.querySelector('#c');
     const view1Elem = document.querySelector('#view1');
     const view2Elem = document.querySelector('#view2');
     const renderer = new THREE.WebGLRenderer({canvas});
-  
-    
+      
     camera.zoom = 0.2;
     camera.position.set(0, 10, 20);
-  
     const cameraHelper = new THREE.CameraHelper(camera);
   
-    
-  
     const gui = new GUI({ autoPlace: false });
-
-    // const cubeFolder = gui.addFolder("Cube")
-    // cubeFolder.add(cube.rotation, "x", 0, Math.PI * 2, 0.01)
-    // cubeFolder.add(cube.rotation, "y", 0, Math.PI * 2, 0.01)
-    // cubeFolder.add(cube.rotation, "z", 0, Math.PI * 2, 0.01)
-    // cubeFolder.open()
-
-    // const cameraFolder = gui.addFolder("Camera")
-    // cameraFolder.add(camera.position, "z", 0, 10, 0.01)
-    // cameraFolder.open()
-
-
     const cameraFolder = gui.addFolder("Camera view");
-    cameraFolder.add(camera, 'zoom', 0.01, 1, 0.01).listen();
+    cameraFolder.add(camera, 'zoom', 0.05, 0.5, 0.01).listen();
     const minMaxGUIHelper = new MinMaxGUIHelper(camera, 'near', 'far', 0.1);
     cameraFolder.add(minMaxGUIHelper, 'min', 0.1, 50, 0.1).name('near');
     cameraFolder.add(minMaxGUIHelper, 'max', 0.1, 50, 0.1).name('far');
     // cameraFolder.open()
 
     const coordinateFolder = gui.addFolder("Coordinates");
-    coordinateFolder.add(camera.position, "x", -40, 40, 0.01);
-    coordinateFolder.add(camera.position, "y", 10, 20, 0.01);
-    coordinateFolder.add(camera.position, "z", 0, 100, 0.01);
+    coordinateFolder.add(camera.position, "x", xmin, xmax, 0.01);
+    coordinateFolder.add(camera.position, "y", ymin, ymax, 0.01);
+    coordinateFolder.add(camera.position, "z", zmin, zmax, 0.01);
     // coordinateFolder.open()
     var guiContainer = document.getElementById('gui-container');
     guiContainer.appendChild(gui.domElement);
 
     const controls = new OrbitControls(camera, view1Elem);
+    controls.minZoom = 0.05;
+    controls.maxZoom = 0.5;
+    controls.maxPolarAngle = Math.PI/2; 
     controls.target.set(0, 5, 0);
     controls.update();
   
@@ -214,8 +209,32 @@ function Workspace(props) {
   // console.log(camera.position.x);
   const initData = () => {
     // var xval = obj1.x;
-    var x = camera.position.x;
-    console.log("camera X coordinate value is set as : " + x);
+
+    var data = { 
+        "cam_xmin": xmin,
+        "cam_xmax": xmax,
+        "cam_ymin": ymin,
+        "cam_ymax": ymax,
+        "cam_zmin": zmin,
+        "cam_zmax": zmax,
+    }
+    //Node API test
+    axios({
+      "method": "POST",
+      "url": "http://localhost:3000/api/courses",
+      "headers": {
+        
+      }, "params": {
+        "myData": data
+      }
+    })
+    .then((response) => {
+      console.log(response)
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+    console.log("camera X coordinate value is set as : " + xmin);
   }
   // go back to landing page button setting
   const btnClicked = () => {

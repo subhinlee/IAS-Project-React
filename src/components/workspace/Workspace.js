@@ -4,15 +4,15 @@ import * as THREE from "three";
 // import { TrackballControls } from 'three/examples/jsm/controls/TrackballControls.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GUI } from 'three/examples/jsm/libs/dat.gui.module';
-import MinMaxGUIHelper from '../../helpers/MinMaxGUIHelper/MinMaxGUIHelper';
+import { Spherical } from 'three/src/math/Spherical.js'
+import MinMaxGUIHelper from '../../helpers/MinMaxGUIHelper';
 import axios from 'axios';
 
 function Workspace(props) {
-  // const data = [1,2,3,4,5];
-  // const id = 34000;
 
   useEffect(() => {
     initThree();
+    
   });
 
   const size = 1;
@@ -26,6 +26,18 @@ function Workspace(props) {
   const ymax = 20;
   const zmin = 0;
   const zmax = 100;
+
+  var minSpherical = new Spherical();
+  minSpherical.setFromCartesianCoords(xmin, ymin, zmin);
+  var minRadius = minSpherical.radius;
+  var minPhi = minSpherical.phi;
+  var minTheta = minSpherical.theta;
+
+  var maxSpherical = new Spherical();
+  maxSpherical.setFromCartesianCoords(xmax, ymax, zmax);
+  var maxRadius = maxSpherical.radius;
+  var maxPhi = maxSpherical.phi;
+  var maxTheta = maxSpherical.theta;
 
   const initThree = () => {
     const canvas = document.querySelector('#c');
@@ -41,8 +53,8 @@ function Workspace(props) {
     const cameraFolder = gui.addFolder("Camera view");
     cameraFolder.add(camera, 'zoom', 0.05, 0.5, 0.01).listen();
     const minMaxGUIHelper = new MinMaxGUIHelper(camera, 'near', 'far', 0.1);
-    cameraFolder.add(minMaxGUIHelper, 'min', 0.1, 50, 0.1).name('near');
-    cameraFolder.add(minMaxGUIHelper, 'max', 0.1, 50, 0.1).name('far');
+    cameraFolder.add(minMaxGUIHelper, 'min', 1, 50, 0.1).name('near');
+    cameraFolder.add(minMaxGUIHelper, 'max', 1, 50, 0.1).name('far');
     // cameraFolder.open()
 
     const coordinateFolder = gui.addFolder("Coordinates");
@@ -208,20 +220,20 @@ function Workspace(props) {
 
   // console.log(camera.position.x);
   const initData = () => {
-    // var xval = obj1.x;
+
 
     var data = { 
-        "cam_xmin": xmin,
-        "cam_xmax": xmax,
-        "cam_ymin": ymin,
-        "cam_ymax": ymax,
-        "cam_zmin": zmin,
-        "cam_zmax": zmax,
+        cam_rmin : minRadius,
+        cam_rmax: maxRadius,
+        cam_incmin: minPhi,
+        cam_incmax: maxPhi,
+        cam_azimin: minTheta,
+        cam_azimax: maxTheta,
     }
     //Node API test
     axios({
       "method": "POST",
-      "url": "http://localhost:3000/api/courses",
+      "url": "http://localhost:3001/api/courses",
       "headers": {
         
       }, "params": {
@@ -234,7 +246,6 @@ function Workspace(props) {
     .catch((error) => {
       console.log(error)
     })
-    console.log("camera X coordinate value is set as : " + xmin);
   }
   // go back to landing page button setting
   const btnClicked = () => {

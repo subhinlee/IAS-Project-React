@@ -233,7 +233,7 @@ function Workspace(props) {
     //Node API test
     axios({
       "method": "POST",
-      "url": "http://localhost:3001/api/courses",
+      "url": "http://localhost:3001/api",
       "headers": {
         
       }, "params": {
@@ -256,7 +256,7 @@ function Workspace(props) {
     <div className="App">
       workspace 
       <button className="back" onClick={btnClicked} >go to 0</button>
-      <button id="sendData" onClick={initData} >get Value</button>
+      <button id="sendData" onClick={initData} >Send Value</button>
       <div id="gui-container"></div>
       {/* <button onClick={zoom} >zoom</button> */}
       <canvas id="c"></canvas>

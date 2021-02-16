@@ -15,6 +15,10 @@ function Workspace(props) {
     
   });
 
+  console.log("im in work space")
+  console.log(props.obj3d)
+  console.log("im in work space")
+
   const size = 1;
   const near = 5;
   const far = 50;

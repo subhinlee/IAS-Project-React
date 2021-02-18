@@ -4,7 +4,8 @@ import * as THREE from "three";
 // import { TrackballControls } from 'three/examples/jsm/controls/TrackballControls.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GUI } from 'three/examples/jsm/libs/dat.gui.module';
-import { Spherical } from 'three/src/math/Spherical.js'
+import { Spherical } from 'three/src/math/Spherical.js';
+import { PLYLoader } from 'three/examples/jsm/loaders/PLYLoader';
 import MinMaxGUIHelper from '../../helpers/MinMaxGUIHelper';
 import axios from 'axios';
 
@@ -114,24 +115,27 @@ function Workspace(props) {
       mesh.rotation.x = Math.PI * -.5;
       scene.add(mesh);
     }
-    {
-      const cubeSize = 4;
-      const cubeGeo = new THREE.BoxBufferGeometry(cubeSize, cubeSize, cubeSize);
-      const cubeMat = new THREE.MeshPhongMaterial({color: '#8AC'});
-      const mesh = new THREE.Mesh(cubeGeo, cubeMat);
-      mesh.position.set(cubeSize + 1, cubeSize / 2, 0);
-      scene.add(mesh);
-    }
-    {
-      const sphereRadius = 3;
-      const sphereWidthDivisions = 32;
-      const sphereHeightDivisions = 16;
-      const sphereGeo = new THREE.SphereBufferGeometry(sphereRadius, sphereWidthDivisions, sphereHeightDivisions);
-      const sphereMat = new THREE.MeshPhongMaterial({color: '#CA8'});
-      const mesh = new THREE.Mesh(sphereGeo, sphereMat);
-      mesh.position.set(-sphereRadius - 1, sphereRadius + 2, 0);
-      scene.add(mesh);
-    }
+
+    // Load 3d object file 
+      var file3d = props.obj3d;
+      var reader = new FileReader();
+      reader.onload = function ()
+      {
+          var loader = new PLYLoader();
+          //alert(this.result)
+          var geometry = loader.parse(this.result);
+          var material = new THREE.MeshPhongMaterial( { color: 0x0055ff, flatShading: true } );
+          const mesh = new THREE.Mesh(geometry, material);
+          mesh.position.y = - 0.2;
+          mesh.position.z = 0.3;
+          // mesh.rotation.x = - Math.PI / 2;
+          mesh.scale.multiplyScalar( 0.01 );
+          mesh.castShadow = true;
+          mesh.receiveShadow = true;
+          scene.add(mesh);
+      }; 
+      reader.readAsText(file3d)     
+  
   
     {
       const color = 0xFFFFFF;
@@ -213,6 +217,7 @@ function Workspace(props) {
         cameraHelper.visible = true;
   
         scene.background.set(0x000040);
+        
         renderer.render(scene, camera2);
       }
   

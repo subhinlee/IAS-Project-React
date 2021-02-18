@@ -126,9 +126,10 @@ function Workspace(props) {
           var geometry = loader.parse(this.result);
           var material = new THREE.MeshPhongMaterial( { color: 0x0055ff, flatShading: true } );
           const mesh = new THREE.Mesh(geometry, material);
-          mesh.position.y = - 0.2;
-          mesh.position.z = 0.3;
-          // mesh.rotation.x = - Math.PI / 2;
+          mesh.position.x = 5
+          mesh.position.y = 2;
+          mesh.position.z = 0;
+          mesh.rotation.x = - Math.PI / 2;
           mesh.scale.multiplyScalar( 0.01 );
           mesh.castShadow = true;
           mesh.receiveShadow = true;

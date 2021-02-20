@@ -237,7 +237,7 @@ function Workspace(props) {
     //Node API test
     axios({
       "method": "POST",
-      "url": "http://localhost:3001/api",
+      "url": "http://localhost:3001/uploadjson",
       "headers": {
         
       }, "params": {

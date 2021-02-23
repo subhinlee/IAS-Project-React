@@ -255,12 +255,35 @@ function Workspace(props) {
   const btnClicked = () => {
     props.stepChanged(0);
   }
-    
+
+  const initTrig = () => {
+    var data = { 
+      training : "start",
+    }
+    //Node API test
+    axios({
+      "method": "POST",
+      "url": "http://localhost:3001/receivetrigger",
+      "headers": {
+        
+      }, "params": {
+        "myData": data
+      }
+    })
+    .then((response) => {
+      console.log(response)
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+  }
+ 
   return (
     <div className="App">
       workspace 
       <button className="back" onClick={btnClicked} >go to 0</button>
       <button id="sendData" onClick={initData} >Send Value</button>
+      <button id="sendTrig" onClick={initTrig} >Start Training</button>
       <div id="gui-container"></div>
       {/* <button onClick={zoom} >zoom</button> */}
       <canvas id="c"></canvas>

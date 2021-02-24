@@ -129,11 +129,17 @@ function Workspace(props) {
           mesh.position.x = 5
           mesh.position.y = 2;
           mesh.position.z = 0;
-          mesh.rotation.x = - Math.PI / 2;
-          mesh.scale.multiplyScalar( 0.01 );
+          // mesh.rotation.x = - Math.PI / 2;
+
+          var multiplier = 5/mesh.geometry.boundingSphere.radius;
+
+          console.log(mesh);
+          mesh.scale.multiplyScalar( multiplier  );
+          console.log(mesh);
           mesh.castShadow = true;
           mesh.receiveShadow = true;
           scene.add(mesh);
+          
       }; 
       reader.readAsText(file3d)     
   

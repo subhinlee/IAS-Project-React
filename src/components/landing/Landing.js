@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import backgroundVideo from './video.mp4';
 import { Button } from '@material-ui/core';
 import axios from 'axios';
-//import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Landing(props) {
   const [fileSelected, setFileSelected] = useState(false);

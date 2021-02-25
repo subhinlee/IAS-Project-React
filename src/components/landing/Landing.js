@@ -168,9 +168,8 @@ function Landing(props) {
     <div className="Landing">
       <video autoPlay muted loop id="video">
           <source src={backgroundVideo} type="video/mp4" />
-      </video>
-
-      {/*<input type="file" name="file" accept=".ply,.obj"onChange={onChangeHandler}/>*/}
+      </video> 
+      <input type="file" name="file" accept=".ply"onChange={onChangeHandler}/>
 
       <Button fullWidth variant="outlined" color="secondary" onClick={btnClicked}> go to 1 </Button>
 

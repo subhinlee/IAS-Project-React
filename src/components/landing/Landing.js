@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import backgroundVideo from './video.mp4';
 import { Button } from '@material-ui/core';
 import axios from 'axios';
+//import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Landing(props) {
   const [fileSelected, setFileSelected] = useState(false);
@@ -167,26 +168,26 @@ function Landing(props) {
     <div className="Landing">
       <video autoPlay muted loop id="video">
           <source src={backgroundVideo} type="video/mp4" />
-      </video> 
+      </video>
 
       {/*<input type="file" name="file" accept=".ply,.obj"onChange={onChangeHandler}/>*/}
 
       <Button fullWidth variant="outlined" color="secondary" onClick={btnClicked}> go to 1 </Button>
 
-      <div className="container">
-        <div className="center">
+      {/*<div className="container">
+        <div className="center">*/}
           {/*<a  href="#get-started" className="button">GET STARTED</a>*/}
-          <form className="my-form">
+          {/*<form className="my-form">
             <input type="button" name="start" id="get-started" onChange={getStarted}/>
             <label className="button" htmlFor="get-started">GET STARTED</label>
           </form>
         </div>
-      </div>
+      </div>*/}
 
       <div id="drop-area">
         <Button color="secondary" onClick={dragAndDropArea}> activate </Button>
         <form className="my-form">
-          <p>Upload a 3D object ( one ply file ) with the file dialog or by dragging and dropping onto the dashed region</p>
+          <p>Upload a 3D object ( one ply file )<br />with the file dialog or<br />by dragging and dropping onto the dashed region</p>
           {/*<input type="file" id="fileElem" multiple accept="image/*" onchange="handleFiles(this.files)"></input>*/}
           <input type="file" name="file" id="fileElem" accept=".ply,.obj" onChange={onChangeHandler}/>
           <label className="button" htmlFor="fileElem">Select a file</label>
@@ -197,7 +198,29 @@ function Landing(props) {
 
       <div className="container">
         <div className="center">
-          <h3 color="white">Set The Parameters</h3>
+          <h3 className="set-parameters">Parameters</h3>
+        </div>
+      </div>
+
+      <div className="container">
+        <div className="center set-parameters">
+          Amount of by blender generated images:&nbsp;
+          <input class="form-control" type="number"/>&nbsp;
+          <span class="btn btn-secondary tooltip" data-bs-toggle="tooltip" data-bs-placement="right" title="Put information here..">Info</span>
+        </div>
+      </div>
+      <div className="container">
+        <div className="center set-parameters">
+          Amount of real images:&nbsp;
+          <input class="form-control" type="number"/>&nbsp;
+          <span class="btn btn-secondary tooltip" data-bs-toggle="tooltip" data-bs-placement="right" title="Put information here..">Info</span>
+        </div>
+      </div>
+      <div className="container">
+        <div className="center set-parameters">
+          "Training data / test data" - relation:&nbsp;
+          <input class="form-control" type="text"/>&nbsp;
+          <span class="btn btn-secondary tooltip" data-bs-toggle="tooltip" data-bs-placement="right" title="Put information here..">Info</span>
         </div>
       </div>
 
